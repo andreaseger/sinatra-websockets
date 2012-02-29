@@ -3,6 +3,6 @@ require 'environment'
 
 require './app'
 run Rack::URLMap.new({
-  '/' => App.run!,
+  '/' => App,
   '/assets' => sprockets
 })
