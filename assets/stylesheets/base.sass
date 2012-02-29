@@ -1,0 +1,64 @@
+$total_cols: 10
+$col_width: 5em
+$gutter_width: 1em
+$side_gutter_width: $gutter_width
+
+$show-grid-backgrounds: false
+
+$base_font_size: 16px
+$base_line_height: 24px
+
+
+// SUSY
+// Don't move this @import above the GRID and FONT-SIZE overrides.
+@import susy
+
+// COLORS
+// Set any colors you will need later.
+$background: black
+$primary: #F6F3E8
+$secondary: #96CBFE
+$third: #00A0A0
+$forth: #A8FF60
+
+// FONTS
+// Give yourself some font stacks to work with.
+=sans-family
+  font-family: 'Lato', sans-serif
+
+=serif-family
+  font-family: serif
+
+=monospace-family
+  font-family: 'Consolas', 'Ubuntu Mono', monospace, sans-serif
+// OTHER MIXINS
+// Mixins set here will be available in defaults, screen, print and IE
+// Or anywhere you import either base or defaults
+
+=my-button($buttoncolor, $text, $background)
+  outline: none
+  background: $buttoncolor
+  color: $text
+  font-weight: bold
+  padding: 6px 7px
+  border: 1px solid $buttoncolor - #222222
+  cursor: pointer
+  -webkit-box-shadow: 2px 2px 0px 0px $background
+  -moz-box-shadow: 2px 2px 0px 0px $background
+  box-shadow: 2px 2px 0px 0px $background
+  &::-moz-focus-inner
+    border: 0
+  &:hover
+    position: relative
+    left: -1px
+    top: -1px
+    -webkit-box-shadow: 3px 3px 0px 0px $background
+    -moz-box-shadow: 3px 3px 0px 0px $background
+    box-shadow: 3px 3px 0px 0px $background
+  &:active
+    position: relative
+    left: 1px
+    top: 1px
+    -webkit-box-shadow: 0px 0px
+    -moz-box-shadow: 0px 0px
+    box-shadow: 0px 0px

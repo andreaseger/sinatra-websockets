@@ -1,0 +1,36 @@
+//= require_self
+
+//= depend_on base
+//= depend_on defaults
+
+//@import "base.css.sass"
+@import "defaults"
+
+//@import "compass/typography/lists/bullets"
+@import "compass/typography/vertical_rhythm"
+@import "compass/typography/lists/horizontal-list"
+
+.clear
+  clear: both
+
+#container
+  +container
+  +susy-grid-background
+  header, footer
+    +full
+  header nav
+    +horizontal-list
+  footer .links
+    +horizontal-list
+  h3.day-header
+    text-align: center
+    &:focus, &:hover, &:active
+      color: $secondary - #222222
+      text-decoration: none
+
+  button
+    +my-button($secondary, black, transparent)
+
+  ul
+    margin: .5em 1em
+    padding: 0
