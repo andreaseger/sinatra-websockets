@@ -1,3 +1,5 @@
+require_relative 'lib/asset_helper'
+
 class App < Sinatra::Base
   register Mustache::Sinatra
   register Sinatra::Namespace
@@ -5,7 +7,10 @@ class App < Sinatra::Base
 
   set :root, File.dirname(__FILE__)
   set :public_folder, File.join(root, 'public')
+  set :assets_prefix, 'assets'
+  set :assets_path, File.join(public_folder, assets_prefix)
 
+  set :sprockets, ::AssetHelper::sprockets
   configure do |c|
     set :mustache, {
       templates: File.join(root, 'templates'),
@@ -22,9 +27,6 @@ class App < Sinatra::Base
     c.also_reload "./views/**/*.tb"
   end
 
-  before do
-    @settings = settings
-  end
   get '/' do
     mustache :home
   end
