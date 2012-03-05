@@ -7,10 +7,7 @@ class App < Sinatra::Base
 
   set :root, File.dirname(__FILE__)
   set :public_folder, File.join(root, 'public')
-  set :assets_prefix, 'assets'
-  set :assets_path, File.join(public_folder, assets_prefix)
 
-  set :sprockets, ::AssetHelper::sprockets
   configure do |c|
     set :mustache, {
       templates: File.join(root, 'templates'),
@@ -25,6 +22,12 @@ class App < Sinatra::Base
     register Sinatra::Reloader
     c.also_reload "./lib/**/*.rb"
     c.also_reload "./views/**/*.tb"
+  end
+
+  get '/assets/*' do
+    new_env = env.clone
+    new_env["PATH_INFO"].gsub!('/assets','')
+    ::Assets.sprockets.call(new_env)
   end
 
   get '/' do

@@ -20,4 +20,4 @@ REDIS_CONFIG =  if ENV['BRAIN_REDIS_URL'] && rack_env == 'production'
                   {}
                 end
 
-require './../lib/asset_helper.rb'
+require_relative '../lib/asset_helper.rb'

@@ -1,8 +1,10 @@
-module AssetHelpers
-  def asset_path(source)
-    "/assets/" + sprockets.find_asset(source).digest_path
+module Assets
+  module Helpers
+    def asset_path(source)
+      "/assets/" + ::Assets.sprockets.find_asset(source).digest_path
+    end
   end
-  def sprockets
+  def self.sprockets
     return @sprockets if @sprockets
     compass_gem_root = Gem.loaded_specs['compass'].full_gem_path
     @sprockets = Sprockets::Environment.new { |env| env.logger = Logger.new(STDOUT) }
