@@ -9,6 +9,9 @@ gem 'mustache', :require => 'mustache/sinatra'
 gem 'redis'
 gem 'thin'
 gem 'em-websocket'
+gem 'em-http-request'
+gem 'msgpack'
+gem 'json'
 
 group :assets do
   gem 'therubyracer'
