@@ -4,5 +4,5 @@ require 'environment'
 MESSAGEPACK = false
 
 EventMachine.run {
-  require './websockets_app'
+  require './ws_app'
 }
