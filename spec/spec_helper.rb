@@ -11,10 +11,9 @@ RSpec.configure do |config|
   config.filter_run_excluding :slow => true
 
   config.before :all do
-    $redis = Redis.new({})
+    $redis = MockRedis.new
   end
   config.before :each do
-    $redis.select 12
     $redis.flushdb
   end
 end

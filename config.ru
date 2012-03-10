@@ -1,12 +1,12 @@
 $:.unshift File.expand_path("../config",__FILE__)
+$:.unshift File.expand_path("../lib",__FILE__)
+$:.unshift File.expand_path("../.",__FILE__)
 require 'environment'
-
-MESSAGEPACK = false
-require './app'
+require 'wrapper'
+require 'app'
 
 EventMachine.run do
-  p "eventmachine"
-  require './ws_app'
+  require 'ws_app'
 
   App.run!
 end

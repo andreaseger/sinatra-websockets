@@ -19,5 +19,13 @@ REDIS_CONFIG =  if ENV['BRAIN_REDIS_URL'] && rack_env == 'production'
                 else
                   {}
                 end
+if MESSAGE_WRAPPER == :json
+  require 'json'
+  print "using JSON\n"
+else
+  require 'msgpack'
+  print "using MessagePack\n"
+end
 
-require_relative '../lib/asset_helper.rb'
+
+require_relative '../lib/assets.rb'

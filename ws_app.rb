@@ -1,24 +1,7 @@
 @channel = EM::Channel.new
 
-def pack(msg)
-  if MESSAGEPACK
-    msg.to_msgpack
-  else
-    msg.to_json
-  end
-end
-
-def unpack(msg)
-  if MESSAGEPACK
-    MessagePack.unpack(msg)
-  else
-    JSON.parse(msg)
-  end
-end
-alias :p :pack
-alias :u :unpack
-
-EventMachine::WebSocket.start(host: '0.0.0.0', port: 3000) do |ws|
+EventMachine::WebSocket.start(host: '0.0.0.0', port: 8080) do |ws|
+  include ::Wrapper
   ws.onopen {
     sid = @channel.subscribe { |msg|
             ws.send p(msg)
@@ -39,7 +22,4 @@ EventMachine::WebSocket.start(host: '0.0.0.0', port: 3000) do |ws|
       puts "Error occured: " + error.message
     }
   }
-  #EventMachine.add_periodic_timer(5) {
-  #  @channel.push(sid: -1, msg: "--still alive---")
-  #}
 end

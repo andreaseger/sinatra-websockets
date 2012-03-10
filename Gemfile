@@ -9,9 +9,8 @@ gem 'mustache', :require => 'mustache/sinatra'
 gem 'redis'
 gem 'thin'
 gem 'em-websocket'
-gem 'em-http-request'
-gem 'msgpack'
-gem 'json'
+gem 'msgpack', :require => false
+gem 'json', :require => false
 
 group :assets do
   gem 'therubyracer'
@@ -34,6 +33,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'mock_redis'
   gem 'rspec'
   gem 'mocha'
   gem 'guard-rspec'

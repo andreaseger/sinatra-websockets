@@ -1,4 +1,5 @@
-require_relative 'lib/asset_helper'
+require_relative 'lib/assets'
+require_relative 'lib/assets_helper'
 
 class App < Sinatra::Base
   register Mustache::Sinatra

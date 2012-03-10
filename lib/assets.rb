@@ -1,9 +1,4 @@
 module Assets
-  module Helpers
-    def asset_path(source)
-      "/assets/" + ::Assets.sprockets.find_asset(source).digest_path
-    end
-  end
   def self.sprockets
     return @sprockets if @sprockets
     compass_gem_root = Gem.loaded_specs['compass'].full_gem_path
