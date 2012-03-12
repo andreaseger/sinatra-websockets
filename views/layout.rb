@@ -10,7 +10,7 @@ class App
       end
 
       def javascripts_tag
-        %{<script src="#{asset_path 'application.js'}"</script>}
+        %{<script src="#{asset_path 'application.js'}"></script>}
       end
     end
   end

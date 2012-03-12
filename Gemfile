@@ -11,6 +11,7 @@ gem 'thin'
 gem 'em-websocket'
 gem 'msgpack', :require => false
 gem 'json', :require => false
+gem 'diff_match_patch'
 
 group :assets do
   gem 'therubyracer'
