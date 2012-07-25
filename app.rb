@@ -17,7 +17,7 @@ class App < Sinatra::Base
       views: File.join(root, 'views'),
       namespace: App
     }
-    #$redis = Redis.new(REDIS_CONFIG)
+    $redis = Redis.new(REDIS_CONFIG)
     puts "redis: #{REDIS_CONFIG}"
   end
 

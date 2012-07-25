@@ -9,5 +9,16 @@ module Sinatra
       content_type 'application/javascript'
       data.to_json
     end
+
+    def markdown(text)
+      return if text.nil?
+      text.delete! '#'
+      text.gsub! /^\s*\./, ''
+      md.render(text)
+    end
+
+    def md
+      #@md ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML, hard_wrap: true, filter_html: true, autolink: true, no_intra_emphasis: true, tables: true)
+    end
   end
 end

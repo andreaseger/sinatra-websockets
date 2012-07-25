@@ -19,6 +19,8 @@ REDIS_CONFIG =  if ENV['BRAIN_REDIS_URL'] && rack_env == 'production'
                 else
                   {}
                 end
+
+
 if MESSAGE_WRAPPER == :json
   require 'json'
   print "using JSON\n"
@@ -28,4 +30,4 @@ else
 end
 
 
-require_relative '../lib/assets.rb'
+#require_relative '../lib/assets.rb'

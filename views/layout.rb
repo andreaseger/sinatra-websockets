@@ -3,7 +3,13 @@ class App
     class Layout < Mustache
       include Assets::Helper
       def title
-        "App"
+        @title || "App"
+      end
+      def ga_site_id
+        ENV['BRAIN_GA_ID']
+      end
+      def show_ga
+        ENV['RACK_ENV'] == 'production'
       end
       def stylesheets_tag
         %{<link href="#{asset_path 'application.css'}" media="screen, projection" rel="stylesheet" type="text/css" />}
