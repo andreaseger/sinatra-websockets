@@ -23,9 +23,13 @@ class Websocket < Goliath::WebSocket
       env.stream_send p(msg)
     end
 
-    unless diff2base.empty?
-      env.stream_send(p(  type: 'basetext', basetext: basetext))
-      env.stream_send(p(  type: 'update',   diff: diff2base))
+#    unless diff2base.empty?
+#      env.stream_send(p(  type: 'basetext', basetext: basetext))
+#      env.stream_send(p(  type: 'update',   diff: diff2base))
+#    end
+    if env.redis.exists db_key(123,'diff2base')
+      diff = env.redis.get db_key(123,'diff2base')
+      env.stream_send(p(  type: 'update',   diff: diff))
     end
   end
 
@@ -39,15 +43,21 @@ class Websocket < Goliath::WebSocket
     m = u msg
     env.logger.info("WS MESSAGE: #{m}")
 
+    diff = m['diff']
+    env.redis.set db_key(123,'diff2base'), diff
 
-    diff2base = m['diff']
-    if diff2base.length > MAX_DIFF_LENGTH
-      basetext = env.dmp.patch_apply(env.dmp.patch_fromText(diff2base), basetext)[0]
-      env.logger.info("UPDATE BASETEXT: #{basetext}")
-      message = { type: 'basetext', basetext: basetext }
-    else
-      message = { type: 'update', diff: diff2base }
-    end
+    message = { type: 'update', diff: diff }
+
+#    if diff2base.length > MAX_DIFF_LENGTH
+#      new_base, success = env.dmp.patch_apply(env.dmp.patch_fromText(diff2base), basetext)
+#      if success
+#        basetext= new_base
+#        env.logger.info("UPDATE BASETEXT: #{new_base}")
+#        message = { type: 'basetext', basetext: new_base }
+#      end
+#    else
+#      message = { type: 'update', diff: diff }
+#    end
     env.channel << message
   end
 
@@ -63,21 +73,26 @@ class Websocket < Goliath::WebSocket
   end
 
 private
+  def db_key(pad,key)
+    "pad:#{pad}:#{key}"
+  end
+
   def basetext
-    return '' unless env.redis.exists "123:basetext"
-    env.redis.get "123:basetext"
+    binding.pry
+    text = env.redis.get("123:basetext")
   end
 
   def basetext= text
+    env.logger.info("set basetext #{text}")
     env.redis.set "123:basetext", text
   end
 
   def diff2base
-    return '' unless env.redis.exists "123:diff2base"
-    env.redis.get "123:diff2base"
+    env.redis.get("123:diff2base") || ''
   end
 
   def diff2base= diff
+    env.logger.info("set diff2base #{diff}")
     env.redis.set "123:diff2base", diff
   end
 
