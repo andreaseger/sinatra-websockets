@@ -28,6 +28,3 @@ else
   require 'msgpack'
   print "using MessagePack\n"
 end
-
-
-#require_relative '../lib/assets.rb'
