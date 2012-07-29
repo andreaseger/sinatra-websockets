@@ -15,25 +15,24 @@ require 'template_helper'
 
 class AssetsAPI < Goliath::API
   include Goliath::Rack::AsyncMiddleware
-  include ::Assets
 
   def post_process(env, status, headers, body)
-    p 'asd:w'
-    self.sprockets.call(env)
+    binding.pry
+    ::Assets.sprockets.call({'PATH_INFO' => env['PATH_INFO'].gsub('/assets','')}) if env['PATH_INFO'] =~ /assets/
   end
 end
 
-class App < Goliath::API
-  include Goliath::TemplateHelper
+class Foo < Goliath::API
+  include Sinatra::TemplateHelper
+  use AssetsAPI
+
   def response(env)
     p env['PATH_INFO']
     case env['PATH_INFO']
     when '/ws'
       WebSocket
     when /\/assets\/.*/
-      new_env = env.clone
-      new_env["PATH_INFO"].gsub!('/assets','')
-      ::Assets.sprockets.call(new_env)
+      super(env)
     when '/templates.json'
       [200, {}, templates ]
     else

@@ -34,6 +34,7 @@ end
 group :development, :test do
   gem 'pry'
   gem 'pry-nav'
+  gem 'pry-stack_explorer'
   #gem 'guard-livereload'
 end
 

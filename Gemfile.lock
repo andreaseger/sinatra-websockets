@@ -38,6 +38,7 @@ GEM
     async-rack (0.5.1)
       rack (~> 1.1)
     awesome_print (1.0.2)
+    binding_of_caller (0.6.7)
     capistrano (2.12.0)
       highline
       net-scp (>= 1.0.0)
@@ -102,6 +103,8 @@ GEM
       slop (~> 3.3.1)
     pry-nav (0.2.2)
       pry (~> 0.9.10)
+    pry-stack_explorer (0.4.5)
+      binding_of_caller (~> 0.6.2)
     rack (1.4.1)
     rack-accept-media-types (0.9)
     rack-contrib (1.1.0)
@@ -159,6 +162,7 @@ DEPENDENCIES
   mustache
   pry
   pry-nav
+  pry-stack_explorer
   rake
   redis
   rspec
