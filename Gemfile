@@ -3,14 +3,9 @@ source "https://rubygems.org"
 
 gem 'rake'
 
-#gem 'sinatra', :require => 'sinatra/base'
-#gem 'sinatra-contrib', :require => 'sinatra/contrib'
-#gem 'thin'
-
 gem 'goliath', :git => 'git://github.com/postrank-labs/goliath.git'
 gem 'em-websocket', :require => false
 gem 'mustache'
-
 
 gem 'msgpack', :require => false
 gem 'json', :require => false
@@ -32,7 +27,6 @@ group :assets do
 end
 
 group :development do
-  #gem 'sinatra-reloader', :require => 'sinatra/reloader'
   gem 'capistrano'
   gem 'guard-sprockets2'
 end

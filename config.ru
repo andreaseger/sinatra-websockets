@@ -5,9 +5,4 @@ require 'environment'
 require 'wrapper'
 require 'app'
 
-$redis = Redis.new(REDIS_CONFIG)
-EventMachine.run do
-  require 'ws_app'
-
-  App.run!
-end
+App.run!

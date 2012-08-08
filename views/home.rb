@@ -1,4 +1,4 @@
-class App
+class WebSocket
   module Views
     class Home < Mustache
       def test
