@@ -42,7 +42,7 @@ class KeyboardHandler < EM::Connection
 end
 
 EventMachine.run {
-  http = EventMachine::HttpRequest.new("ws://0.0.0.0:8080").get :timeout => 0
+  http = EventMachine::HttpRequest.new("ws://0.0.0.0:9000").get :timeout => 0
 
   http.errback { puts "oops" }
   http.callback {

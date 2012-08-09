@@ -2,18 +2,21 @@
 source "https://rubygems.org"
 
 gem 'rake'
-
-gem 'sinatra', :require => 'sinatra/base'
-gem 'sinatra-contrib', :require => 'sinatra/contrib'
-gem 'mustache', :require => 'mustache/sinatra'
+gem 'foreman'
 
 gem 'thin'
-gem 'em-websocket'
+gem 'sinatra', :require => false
+gem 'mustache', :require => false
+
+gem 'goliath', :git => 'git://github.com/postrank-labs/goliath.git', :require => false
+gem 'em-websocket', :require => false
+
 gem 'msgpack', :require => false
 gem 'json', :require => false
 gem 'diff_match_patch'
 
-gem 'redis'
+gem 'em-synchrony'
+gem 'em-redis'
 
 gem 'awesome_print'
 gem 'colorize'

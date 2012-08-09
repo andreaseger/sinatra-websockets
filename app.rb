@@ -1,12 +1,13 @@
 require_relative 'lib/assets'
-require_relative 'lib/assets_helper'
-require_relative 'lib/template_helper'
+require_relative 'lib/helper/assets_helper'
+require_relative 'lib/helper/template_helper'
+require 'sinatra/base'
+require 'mustache/sinatra'
 
 class App < Sinatra::Base
   register Mustache::Sinatra
-  register Sinatra::Namespace
   require_relative 'views/layout.rb'
-  helpers Sinatra::TemplateHelper
+  helpers Helper::Templates
 
   set :root, File.dirname(__FILE__)
   set :public_folder, File.join(root, 'public')

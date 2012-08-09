@@ -1,7 +1,7 @@
 class App
   module Views
     class Layout < Mustache
-      include Assets::Helper
+      include Helper::Assets
       def title
         @title || "App"
       end

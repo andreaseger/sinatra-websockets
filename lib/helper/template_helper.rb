@@ -1,6 +1,5 @@
-require 'sinatra/base'
-module Sinatra
-  module TemplateHelper
+module Helper
+  module Templates
     def templates
       @templates ||= Dir['templates/client/*'].map {|e| { name: File.basename(e, '.mustache').sub(/^_/,''), template: IO.read(e) } }
     end

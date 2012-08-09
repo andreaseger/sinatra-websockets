@@ -16,7 +16,7 @@ $(window).on 'templates-loaded', =>
     State = History.getState()
     History.log(State.data, State.title, State.url)
   
-ws = new WebSocket('ws://127.0.0.1:8080')
+ws = new WebSocket('ws://localhost:9000/ws')
 ws.onmessage = (evt) =>
   console.log "evt.data: #{evt.data}"
   msg = JSON.parse(evt.data)
