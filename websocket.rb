@@ -27,9 +27,12 @@ class Websocket < Goliath::WebSocket
 #      env.stream_send(p(  type: 'basetext', basetext: basetext))
 #      env.stream_send(p(  type: 'update',   diff: diff2base))
 #    end
-    if env.redis.exists db_key(123,'diff2base')
-      diff = env.redis.get db_key(123,'diff2base')
-      env.stream_send(p(  type: 'update',   diff: diff))
+    redis.exists(db_key(123,'diff2base')) do |response|
+      if response
+        redis.get(db_key(123,'diff2base')) do |diff|
+          env.stream_send(p(  type: 'update',   diff: diff))
+        end
+      end
     end
   end
 
@@ -44,20 +47,19 @@ class Websocket < Goliath::WebSocket
     env.logger.info("WS MESSAGE: #{m}")
 
     diff = m['diff']
-    env.redis.set db_key(123,'diff2base'), diff
+    redis.set(db_key(123,'diff2base'), diff)
 
-    message = { type: 'update', diff: diff }
-
-#    if diff2base.length > MAX_DIFF_LENGTH
-#      new_base, success = env.dmp.patch_apply(env.dmp.patch_fromText(diff2base), basetext)
-#      if success
-#        basetext= new_base
-#        env.logger.info("UPDATE BASETEXT: #{new_base}")
-#        message = { type: 'basetext', basetext: new_base }
-#      end
-#    else
-#      message = { type: 'update', diff: diff }
-#    end
+    if false#diff.length > MAX_DIFF_LENGTH
+      # make some real text out of the last diffs
+      new_base, success = dmp.patch_apply(dmp.patch_fromText(diff), basetext)
+      if success
+        basetext= new_base
+        env.logger.info("UPDATE BASETEXT: #{new_base}")
+        message = { type: 'basetext', basetext: new_base }
+      end
+    else
+      message = { type: 'update', diff: diff }
+    end
     env.channel << message
   end
 
@@ -76,24 +78,4 @@ private
   def db_key(pad,key)
     "pad:#{pad}:#{key}"
   end
-
-  def basetext
-    binding.pry
-    text = env.redis.get("123:basetext")
-  end
-
-  def basetext= text
-    env.logger.info("set basetext #{text}")
-    env.redis.set "123:basetext", text
-  end
-
-  def diff2base
-    env.redis.get("123:diff2base") || ''
-  end
-
-  def diff2base= diff
-    env.logger.info("set diff2base #{diff}")
-    env.redis.set "123:diff2base", diff
-  end
-
 end

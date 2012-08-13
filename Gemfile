@@ -15,8 +15,10 @@ gem 'msgpack', :require => false
 gem 'json', :require => false
 gem 'diff_match_patch'
 
-gem 'em-synchrony'
-gem 'em-redis'
+#gem 'em-synchrony'
+gem 'em-hiredis'
+#gem 'hiredis'
+#gem 'redis', :require => false
 
 gem 'awesome_print'
 gem 'colorize'
