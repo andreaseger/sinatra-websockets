@@ -37,6 +37,9 @@ class App < Sinatra::Base
   end
 
   get '/' do
+    redirect to('/p/foo')
+  end
+  get '/p/*' do
     mustache :home
   end
 end

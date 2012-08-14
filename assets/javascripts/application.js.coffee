@@ -9,6 +9,8 @@ $.getJSON '/templates.json', (data) =>
 History = window.History
 @dmp = new diff_match_patch
 @basetext = ''
+@url = document.URL
+@pad = @url.substring(@url.lastIndexOf('/') + 1);
 
 $(window).on 'templates-loaded', =>
   #icanhaz templates available
@@ -21,6 +23,8 @@ ws.onmessage = (evt) =>
   console.log "evt.data: #{evt.data}"
   msg = JSON.parse(evt.data)
   switch msg.type
+    when 'subscription'
+      console.log 'subscribed'
     when 'basetext'
       @basetext = msg.basetext
       input_text = @basetext
@@ -30,6 +34,7 @@ ws.onmessage = (evt) =>
   $("#inputarea").val( input_text )
 ws.onopen = (evt) =>
   console.log 'connected'
+  ws.send JSON.stringify({ 'type' : 'subscribe', 'pad' : @pad })
 ws.onclose = (evt) =>
   console.log 'disconnected'
 ws.onerror = (evt) =>
@@ -38,4 +43,4 @@ ws.onerror = (evt) =>
 $('#container').on 'keyup', '#inputarea', (e) =>
   unless @basetext == e.currentTarget.value
     diff = dmp.patch_toText( dmp.patch_make( @basetext, e.currentTarget.value ))
-    ws.send JSON.stringify({ 'diff' : diff })
+    ws.send JSON.stringify({ 'type': 'update', 'pad' : @pad, 'diff' : diff })

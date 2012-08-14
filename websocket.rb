@@ -19,21 +19,11 @@ class Websocket < Goliath::WebSocket
 
   def on_open(env)
     env.logger.info("WS OPEN")
-    env['subscription'] = env.channel.subscribe do |msg|
-      env.stream_send p(msg)
-    end
 
 #    unless diff2base.empty?
 #      env.stream_send(p(  type: 'basetext', basetext: basetext))
 #      env.stream_send(p(  type: 'update',   diff: diff2base))
 #    end
-    redis.exists(db_key(123,'diff2base')) do |response|
-      if response
-        redis.get(db_key(123,'diff2base')) do |diff|
-          env.stream_send(p(  type: 'update',   diff: diff))
-        end
-      end
-    end
   end
 
   def on_close(env)
@@ -45,22 +35,40 @@ class Websocket < Goliath::WebSocket
     p "message #{msg}"
     m = u msg
     env.logger.info("WS MESSAGE: #{m}")
+    pad = m['pad']
 
-    diff = m['diff']
-    redis.set(db_key(123,'diff2base'), diff)
+    case m['type']
+    when 'update'
+      diff = m['diff']
+      redis.set(db_key(pad,'diff2base'), diff)
 
-    if false#diff.length > MAX_DIFF_LENGTH
-      # make some real text out of the last diffs
-      new_base, success = dmp.patch_apply(dmp.patch_fromText(diff), basetext)
-      if success
-        basetext= new_base
-        env.logger.info("UPDATE BASETEXT: #{new_base}")
-        message = { type: 'basetext', basetext: new_base }
+      if false#diff.length > MAX_DIFF_LENGTH
+        # make some real text out of the last diffs
+        new_base, success = dmp.patch_apply(dmp.patch_fromText(diff), basetext)
+        if success
+          basetext= new_base
+          env.logger.info("UPDATE BASETEXT: #{new_base}")
+          message = { type: 'basetext', basetext: new_base }
+        end
+      else
+        message = { type: 'update', diff: diff }
       end
-    else
-      message = { type: 'update', diff: diff }
+    when 'subscribe'
+      #TODO use m['pad']
+      env['subscription'] = env.channel.subscribe do |msg|
+        env.stream_send p(msg)
+      end
+      redis.exists(db_key(pad,'diff2base')) do |response|
+        if response
+          redis.get(db_key(pad,'diff2base')) do |diff|
+            env.stream_send(p(  type: 'update',   diff: diff))
+          end
+        end
+      end
+      env.stream_send p({ type: 'subscription', data: "subscribed to pad: #{pad}"})
     end
-    env.channel << message
+
+    env.channel << message if message
   end
 
   def on_error(env,error)
